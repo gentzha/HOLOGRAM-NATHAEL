@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DOXING BY NATHAEL</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #111, #333);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #555;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #777;
+    }
+
+    .result, .loading {
+      margin-top: 20px;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      width: 300px;
+    }
+
+    .loading {
+      text-align: center;
+      font-style: italic;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Masukan Nomor Telepon/Whatsapp</h1>
+  <input type="text" id="phoneInput" placeholder="08xxxxxxxxxx">
+  <div class="error" id="errorText"></div>
+  <button onclick="checkInfo()">Enter untuk cek informasi</button>
+
+  <div class="loading" id="loading" style="display:none;">Memuat informasi...</div>
+  <div class="result" id="result" style="display:none;"></div>
+
+  <footer>©2025 nathael</footer>
+
+  <script>
+    const names = ["Andi", "Budi", "Siti", "Dewi", "Agus", "Rina", "Joko", "Nina", "Fajar", "Lestari"];
+    const cities = ["Jakarta", "Bandung", "Surabaya", "Medan", "Makassar", "Yogyakarta", "Semarang", "Denpasar", "Palembang", "Balikpapan"];
+
+    function checkInfo() {
+      const input = document.getElementById('phoneInput').value.trim();
+      const errorText = document.getElementById('errorText');
+      const result = document.getElementById('result');
+      const loading = document.getElementById('loading');
+      const onlyDigits = /^\d+$/;
+
+      errorText.textContent = "";
+      result.style.display = "none";
+      loading.style.display = "none";
+      result.innerHTML = "";
+
+      // Validasi: hanya angka dan minimal 10 digit
+      if (input === "" || !onlyDigits.test(input) || input.length < 10) {
+        errorText.textContent = "Masukan nomor telepon";
+        return;
+      }
+
+      loading.style.display = "block";
+
+      setTimeout(() => {
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        const randomCity = cities[Math.floor(Math.random() * cities.length)];
+
+        loading.style.display = "none";
+        result.innerHTML = `
+          <strong>Nama dari nomer di HP ini:</strong> ${randomName}<br>
+          <strong>Lokasi dari nomer ini:</strong> ${randomCity}
+        `;
+        result.style.display = "block";
+      }, 6000); // durasi loading 6 detik
+    }
+  </script>
+
+</body>
+</html>
