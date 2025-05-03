@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">  
 <head>    
@@ -15,38 +14,25 @@
       text-align: center;  
     }  
     canvas {  
-      display: none;
+      display: block;  
       margin: 0 auto;  
       background: linear-gradient(#000015, #000033);  
       border: 2px solid #0ff;  
     }  
-    #score, #highScore, #exitBtn {  
+    #score, #highScore {  
       position: absolute;  
       top: 10px;  
       font-size: 20px;  
-      display: none;
     }  
     #score { left: 10px; }  
     #highScore { right: 10px; }  
-    #exitBtn {
-      right: 50%;
-      transform: translateX(50%);
-      top: 50px;
-      background: #f0f;
-      border: none;
-      padding: 5px 15px;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-    }
     .controls {  
       position: absolute;  
       bottom: 20px;  
       left: 50%;  
       transform: translateX(-50%);  
       display: flex;  
-      gap: 20px;
-      display: none;
+      gap: 20px;  
     }  
     .btn {  
       width: 60px;  
@@ -58,6 +44,9 @@
       color: #000;  
       font-weight: bold;  
     }  
+    .btn::after {
+      content: "";
+    }
     #okBtn {  
       display: none;  
       position: absolute;  
@@ -77,51 +66,11 @@
     @keyframes blinkAnim {
       50% { opacity: 0; }
     }
-    #mainMenu {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-    #mainMenu h1 {
-      color: #cc66ff;
-      font-size: 3rem;
-      margin-bottom: 30px;
-    }
-    .menu-button {
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      margin: 10px;
-      border: 2px solid #0ff;
-      background: transparent;
-      color: white;
-      border-radius: 15px;
-      cursor: pointer;
-    }
-    .menu-button:hover {
-      background: #0ff;
-      color: black;
-    }
   </style>    
 </head>  
 <body>    
-
-  <div id="mainMenu">
-    <h1>GALACTIC RUNNER</h1>
-    <button class="menu-button" onclick="startGame()">PLAY</button>
-    <button class="menu-button" onclick="goToMain()">EXIT</button>
-  </div>
-
-  <div id="score">Score: 0</div>    
-  <div id="highScore">High Score: 0</div>
-  <button id="exitBtn" onclick="backToMenu()">EXIT</button>
+  <div id="score">Score: 99999</div>    
+  <div id="highScore">High Score: 0</div>    
   <canvas id="gameCanvas"></canvas>    
   <div class="controls">    
     <button class="btn" id="leftBtn"></button>    
@@ -129,7 +78,6 @@
   </div>    
   <button id="okBtn">OK</button>    
   <audio id="explosionSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>  
-
   <script>    
     const canvas = document.getElementById('gameCanvas');    
     const ctx = canvas.getContext('2d');    
@@ -195,6 +143,7 @@
           obstacles.splice(i, 1);  
           score++;  
           document.getElementById('score').textContent = 'Score: ' + score;
+
           if (score % 20 === 0 && score !== lastBlinkScore && !blinking) {
             blinking = true;
             lastBlinkScore = score;
@@ -214,7 +163,12 @@
 
     function checkCollision() {  
       obstacles.forEach(obs => {  
-        if (spaceship.x < obs.x + obs.width && spaceship.x + spaceship.width > obs.x && spaceship.y < obs.y + obs.height && spaceship.y + spaceship.height > obs.y) {  
+        if (  
+          spaceship.x < obs.x + obs.width &&  
+          spaceship.x + spaceship.width > obs.x &&  
+          spaceship.y < obs.y + obs.height &&  
+          spaceship.y + spaceship.height > obs.y  
+        ) {  
           document.getElementById('explosionSound').play();  
           gameOver = true;  
         }  
@@ -252,6 +206,8 @@
       gameLoop();  
     }  
 
+    document.getElementById('okBtn').addEventListener('click', resetGame);  
+
     function gameLoop() {  
       if (gameOver) {  
         if (score > highScore) {  
@@ -265,6 +221,7 @@
         document.getElementById('okBtn').style.display = 'block';  
         return;  
       }  
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);  
       drawStars();  
       updateMovement();  
@@ -273,27 +230,9 @@
       updateObstacles();  
       checkCollision();  
       requestAnimationFrame(gameLoop);  
-    }
+    }  
 
-    function startGame() {
-      document.getElementById('mainMenu').style.display = 'none';
-      canvas.style.display = 'block';
-      document.querySelector('.controls').style.display = 'flex';
-      document.getElementById('score').style.display = 'block';
-      document.getElementById('highScore').style.display = 'block';
-      document.getElementById('exitBtn').style.display = 'block';
-      resetGame();
-    }
-
-    function backToMenu() {
-      location.reload();
-    }
-
-    function goToMain() {
-      window.location.href = 'index.html';
-    }
-
-    document.getElementById('okBtn').addEventListener('click', resetGame);
+    gameLoop();  
   </script>    
 </body>    
-</html>
+</html
