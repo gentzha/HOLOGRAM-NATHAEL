@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fullscreen Video & Musik</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      height: 100%;
+      overflow: hidden;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <video id="myVideo" muted autoplay loop playsinline>
+    <source src="video.mp4" type="video/mp4">
+    Browser Anda tidak mendukung video.
+  </video>
+
+  <audio id="myAudio" loop>
+    <source src="lagu.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung audio.
+  </audio>
+
+  <script>
+    const video = document.getElementById('myVideo');
+    const audio = document.getElementById('myAudio');
+
+    // Fungsi masuk fullscreen
+    function enterFullscreen(elem) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen(); // Safari
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen(); // IE
+      }
+    }
+
+    // Jalankan saat pertama kali pengguna klik (diperlukan oleh browser mobile)
+    document.addEventListener('click', () => {
+      enterFullscreen(document.documentElement); // Masuk fullscreen halaman penuh
+      audio.volume = 1.0;
+      audio.play().catch(e => console.log('Audio error:', e));
+    }, { once: true });
+  </script>
+
+</body>
+</html>
